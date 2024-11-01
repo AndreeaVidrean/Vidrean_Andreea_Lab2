@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Vidrean_Andreea_Lab2.Data;
 using Vidrean_Andreea_Lab2.Models;
-using Microsoft.EntityFrameworkCore;
-namespace Vidrean_Andreea_Lab2.Pages.Books
+
+namespace Vidrean_Andreea_Lab2.Pages.Categories
 {
     public class DetailsModel : PageModel
     {
@@ -19,8 +19,7 @@ namespace Vidrean_Andreea_Lab2.Pages.Books
             _context = context;
         }
 
-        public Book Book { get; set; } = default!;
-        public List<string> Categories { get; set; } = new List<string>();
+        public Category Category { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,24 +28,16 @@ namespace Vidrean_Andreea_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Book
-                .Include(b => b.Author)  // Include autorul
-                .Include(b => b.Publisher) // Include publisherul
-               . Include(b => b.BookCategories) // Include categoriile asociate
-                .ThenInclude(bc => bc.Category)
-                .FirstOrDefaultAsync(m => m.ID == id); // Aici se face evaluarea
-
-            if (book == null)
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
+            if (category == null)
             {
                 return NotFound();
             }
             else
             {
-                Book = book;
-
-                Categories = Book.BookCategories.Select(bc => bc.Category.CategoryName).ToList();
+                Category = category;
             }
             return Page();
-        } 
-    } 
+        }
+    }
 }

@@ -21,6 +21,8 @@ namespace Vidrean_Andreea_Lab2.Models
 
         public int? AuthorID { get; set; } // Foreign key for Author
         public Author? Author { get; set; } // Navigation property
+
+        public ICollection<BookCategory>? BookCategories { get; set; }
     }
     
     
